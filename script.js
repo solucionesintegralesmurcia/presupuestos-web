@@ -364,3 +364,10 @@ function cargarCliente(index) {
 pintarServicios();
 calcular();
 pintarClientes();
+function generarYEnviar() {
+  generarPDF();
+
+  setTimeout(() => {
+    enviarWhatsApp();
+  }, 1200);
+}
