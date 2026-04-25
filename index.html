@@ -1,1 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Generador de Presupuestos Web</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
 
+  <main class="app">
+    <section class="card">
+      <h1>Generador de Presupuestos</h1>
+      <p class="intro">Selecciona los servicios, rellena los datos del cliente y genera un PDF profesional.</p>
+
+      <div class="grid">
+        <input id="cliente" placeholder="Nombre del cliente">
+        <input id="negocio" placeholder="Nombre del negocio">
+        <input id="ciudad" placeholder="Ciudad">
+        <input id="telefono" placeholder="Teléfono">
+      </div>
+
+      <h2>Servicios</h2>
+
+      <div id="servicios" class="servicios"></div>
+
+      <div class="extra">
+        <label>Descuento / oferta (€)</label>
+        <input id="descuento" type="number" value="0">
+      </div>
+
+      <div class="total-box">
+        <p>Total inicial</p>
+        <strong id="total">0 €</strong>
+      </div>
+
+      <textarea id="observaciones" placeholder="Observaciones para el presupuesto"></textarea>
+
+      <button onclick="generarPDF()">Generar presupuesto PDF</button>
+    </section>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
