@@ -93,6 +93,13 @@ function serviciosSeleccionados() {
   return Array.from(document.querySelectorAll(".servicio input:checked")).map(c => servicios[c.value]);
 }
 
+function generarNumeroPresupuesto() {
+  let numero = Number(localStorage.getItem("numeroPresupuesto")) || 1;
+  const codigo = "P-2026-" + String(numero).padStart(3, "0");
+  localStorage.setItem("numeroPresupuesto", numero + 1);
+  return codigo;
+}
+
 function generarPDF() {
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
@@ -106,124 +113,186 @@ function generarPDF() {
     return;
   }
 
-  let y = 20;
+  const numeroPresupuesto = generarNumeroPresupuesto();
+  const fecha = new Date().toLocaleDateString("es-ES");
 
   const logo = new Image();
   logo.src = "logo.png";
 
   logo.onload = function () {
-    doc.addImage(logo, "PNG", 20, 12, 35, 20);
-    crearContenidoPDF(doc, datos, calculo, seleccionados, y);
+    crearPDFPremium(doc, datos, calculo, seleccionados, numeroPresupuesto, fecha, logo);
   };
 
   logo.onerror = function () {
-    crearContenidoPDF(doc, datos, calculo, seleccionados, y);
+    crearPDFPremium(doc, datos, calculo, seleccionados, numeroPresupuesto, fecha, null);
   };
 }
 
-function crearContenidoPDF(doc, datos, calculo, seleccionados, y) {
+function crearPDFPremium(doc, datos, calculo, seleccionados, numeroPresupuesto, fecha, logo) {
+  let y = 18;
+
+  // Cabecera
+  doc.setFillColor(24, 32, 51);
+  doc.rect(0, 0, 210, 38, "F");
+
+  if (logo) {
+    doc.addImage(logo, "PNG", 18, 8, 45, 18);
+  }
+
+  doc.setTextColor(255, 255, 255);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(18);
-  doc.text("PRESUPUESTO PROFESIONAL", 65, y);
+  doc.text("PRESUPUESTO PROFESIONAL", 75, 16);
 
-  y += 8;
   doc.setFont("helvetica", "normal");
   doc.setFontSize(10);
-  doc.text("Web · Google Business · SEO Local · Captación de clientes", 65, y);
+  doc.text("Web · Google Business · SEO Local · Captación de clientes", 75, 24);
 
-  y += 18;
+  doc.setFontSize(9);
+  doc.text(`Nº: ${numeroPresupuesto}`, 160, 16);
+  doc.text(`Fecha: ${fecha}`, 160, 23);
 
-  doc.setDrawColor(15, 122, 79);
-  doc.setLineWidth(0.8);
-  doc.line(20, y, 190, y);
+  y = 52;
 
-  y += 12;
+  // Caja cliente
+  doc.setTextColor(24, 32, 51);
+  doc.setFillColor(245, 247, 250);
+  doc.roundedRect(15, y, 180, 34, 4, 4, "F");
 
   doc.setFont("helvetica", "bold");
   doc.setFontSize(12);
-  doc.text("Datos del cliente", 20, y);
+  doc.text("Datos del cliente", 22, y + 9);
+
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(10);
+  doc.text(`Cliente: ${datos.cliente}`, 22, y + 17);
+  doc.text(`Negocio: ${datos.negocio}`, 22, y + 24);
+  doc.text(`Ciudad: ${datos.ciudad}`, 105, y + 17);
+  doc.text(`Teléfono: ${datos.telefono}`, 105, y + 24);
+
+  y += 48;
+
+  // Servicios
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(13);
+  doc.text("Servicios incluidos", 15, y);
 
   y += 8;
-  doc.setFont("helvetica", "normal");
-  doc.text(`Cliente: ${datos.cliente}`, 20, y);
-  y += 7;
-  doc.text(`Negocio: ${datos.negocio}`, 20, y);
-  y += 7;
-  doc.text(`Ciudad: ${datos.ciudad}`, 20, y);
-  y += 7;
-  doc.text(`Teléfono: ${datos.telefono}`, 20, y);
-
-  y += 14;
-
-  doc.setFont("helvetica", "bold");
-  doc.text("Servicios incluidos", 20, y);
-
-  y += 10;
 
   seleccionados.forEach(s => {
-    if (y > 260) {
+    if (y > 230) {
       doc.addPage();
       y = 20;
     }
 
+    doc.setFillColor(250, 251, 252);
+    doc.roundedRect(15, y, 180, 10, 3, 3, "F");
+
+    doc.setTextColor(24, 32, 51);
     doc.setFont("helvetica", "normal");
-    doc.text(`- ${s.nombre} (${s.precio} €)`, 20, y);
-    y += 7;
+    doc.setFontSize(10);
+    doc.text(s.nombre, 21, y + 7);
+
+    doc.setFont("helvetica", "bold");
+    doc.text(`${s.precio} €`, 170, y + 7);
+
+    y += 13;
   });
 
-  y += 10;
+  y += 8;
 
+  // Caja precio
+  doc.setFillColor(15, 122, 79);
+  doc.roundedRect(15, y, 180, 42, 5, 5, "F");
+
+  doc.setTextColor(255, 255, 255);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(13);
-  doc.text("Resumen económico", 20, y);
+  doc.text("Resumen económico", 22, y + 10);
 
-  y += 10;
-
-  doc.setFontSize(12);
+  doc.setFontSize(10);
   doc.setFont("helvetica", "normal");
+  doc.text(`Precio habitual: ${calculo.subtotal} €`, 22, y + 21);
 
-  doc.text(`Precio normal: ${calculo.subtotal} €`, 20, y);
-  doc.line(50, y - 1, 78, y - 1);
-
-  y += 8;
+  const textoHabitual = `Precio habitual: ${calculo.subtotal} €`;
+  const anchoTexto = doc.getTextWidth(textoHabitual);
+  doc.setDrawColor(255, 255, 255);
+  doc.line(22, y + 20, 22 + anchoTexto, y + 20);
 
   doc.setFont("helvetica", "bold");
-  doc.setTextColor(15, 122, 79);
-  doc.text(`Precio oferta: ${calculo.total.toFixed(2)} €`, 20, y);
+  doc.setFontSize(18);
+  doc.text(`OFERTA FINAL: ${calculo.total.toFixed(2)} €`, 22, y + 33);
+
+  doc.setFontSize(10);
+  doc.text(`Mantenimiento: ${calculo.mensual} €/mes`, 130, y + 33);
+
+  y += 55;
+
+  // Detalles
+  doc.setTextColor(24, 32, 51);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(12);
+  doc.text("Detalles del presupuesto", 15, y);
 
   y += 8;
-  doc.setTextColor(0, 0, 0);
+
   doc.setFont("helvetica", "normal");
-  doc.text(`Descuento aplicado: ${calculo.descuento} €`, 20, y);
-
-  y += 8;
-  doc.text(`IVA aplicado: ${calculo.iva}%`, 20, y);
-
-  y += 8;
-  doc.text(`Mantenimiento mensual recomendado: ${calculo.mensual} €/mes`, 20, y);
+  doc.setFontSize(10);
+  doc.text(`Descuento aplicado: ${calculo.descuento} €`, 15, y);
+  y += 7;
+  doc.text(`IVA aplicado: ${calculo.iva}%`, 15, y);
+  y += 7;
+  doc.text("Validez del presupuesto: 15 días", 15, y);
 
   y += 14;
 
+  // Observaciones
   doc.setFont("helvetica", "bold");
-  doc.text("Observaciones", 20, y);
+  doc.text("Observaciones", 15, y);
 
-  y += 8;
+  y += 7;
   doc.setFont("helvetica", "normal");
-  const obs = doc.splitTextToSize(datos.observaciones, 165);
-  doc.text(obs, 20, y);
+  const obs = doc.splitTextToSize(datos.observaciones, 175);
+  doc.text(obs, 15, y);
 
   y += obs.length * 6 + 12;
 
+  if (y > 230) {
+    doc.addPage();
+    y = 20;
+  }
+
+  // Condiciones
   doc.setFont("helvetica", "bold");
-  doc.text("Condiciones", 20, y);
+  doc.text("Condiciones", 15, y);
 
   y += 8;
   doc.setFont("helvetica", "normal");
-  doc.text("- Presupuesto válido durante 15 días.", 20, y);
+  doc.text("- Forma de pago recomendada: 50% al inicio y 50% a la entrega.", 15, y);
   y += 6;
-  doc.text("- Forma de pago recomendada: 50% al inicio y 50% a la entrega.", 20, y);
+  doc.text("- Servicios adicionales no incluidos se presupuestarán aparte.", 15, y);
   y += 6;
-  doc.text("- Servicios adicionales no incluidos se presupuestarán aparte.", 20, y);
+  doc.text("- El objetivo es mejorar la imagen profesional, la visibilidad y la captación de clientes.", 15, y);
+
+  y += 22;
+
+  // Firma
+  doc.setDrawColor(24, 32, 51);
+  doc.line(15, y, 85, y);
+  doc.line(115, y, 185, y);
+
+  y += 6;
+  doc.setFontSize(9);
+  doc.text("Firma del cliente", 30, y);
+  doc.text("Firma / sello empresa", 132, y);
+
+  // Pie
+  doc.setFillColor(24, 32, 51);
+  doc.rect(0, 282, 210, 15, "F");
+
+  doc.setTextColor(255, 255, 255);
+  doc.setFontSize(8);
+  doc.text("Presupuesto generado para servicios web, Google Business, SEO local y captación de clientes.", 15, 291);
 
   const archivo = `presupuesto-${datos.negocio.toLowerCase().replaceAll(" ", "-")}.pdf`;
   doc.save(archivo);
@@ -241,7 +310,7 @@ function enviarWhatsApp() {
 
   const listaServicios = seleccionados.map(s => `- ${s.nombre}`).join("%0A");
 
-  const mensaje = `Hola ${datos.cliente}, te paso el resumen del presupuesto para ${datos.negocio}.%0A%0AServicios incluidos:%0A${listaServicios}%0A%0APrecio normal: ${calculo.subtotal} €%0APrecio oferta: ${calculo.total.toFixed(2)} €%0AMantenimiento recomendado: ${calculo.mensual} €/mes%0A%0AEl presupuesto tiene una validez de 15 días.`;
+  const mensaje = `Hola ${datos.cliente}, te paso el resumen del presupuesto para ${datos.negocio}.%0A%0AServicios incluidos:%0A${listaServicios}%0A%0APrecio habitual: ${calculo.subtotal} €%0APrecio oferta: ${calculo.total.toFixed(2)} €%0AMantenimiento recomendado: ${calculo.mensual} €/mes%0A%0AEl presupuesto tiene una validez de 15 días.`;
 
   const telefonoLimpio = datos.telefono.replace(/\D/g, "");
   window.open(`https://wa.me/34${telefonoLimpio}?text=${mensaje}`, "_blank");
