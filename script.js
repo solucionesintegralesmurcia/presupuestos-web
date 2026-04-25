@@ -1,5 +1,5 @@
 const servicios = [
-  { nombre: "Mapa de localización en la web", precio: 67, tipo: "unico" }
+  { nombre: "Mapa de localización en la web", precio: 67, tipo: "unico" },
   { nombre: "Landing page profesional", precio: 500, tipo: "unico" },
   { nombre: "Página web completa", precio: 800, tipo: "unico" },
   { nombre: "Google Business Profile", precio: 200, tipo: "unico" },
