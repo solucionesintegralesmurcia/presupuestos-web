@@ -35,7 +35,7 @@ function pintarServicios() {
 
 function aplicarPack(tipo) {
   document.querySelectorAll(".servicio-check").forEach(c => c.checked = false);
-  document.querySelectorAll(".extra-check").forEach(c => c.checked = false);
+  document.querySelectorAll(".extra-btn").forEach(b => b.classList.remove("activo"));
 
   if (tipo === "basico") marcarServicios([0, 5]);
   if (tipo === "local") marcarServicios([0, 2, 3, 5]);
@@ -52,13 +52,15 @@ function marcarServicios(indices) {
 }
 
 function sincronizarExtras() {
-  document.querySelectorAll(".extra-check").forEach(extra => {
-    extra.addEventListener("change", () => {
-      const index = Number(extra.value);
+  document.querySelectorAll(".extra-btn").forEach(boton => {
+    boton.addEventListener("click", () => {
+      const index = Number(boton.dataset.index);
       const checkServicio = document.querySelector(`.servicio-check[value="${index}"]`);
 
+      boton.classList.toggle("activo");
+
       if (checkServicio) {
-        checkServicio.checked = extra.checked;
+        checkServicio.checked = boton.classList.contains("activo");
       }
 
       calcular();
@@ -154,24 +156,24 @@ function crearPDFPremium(doc, datos, calculo, seleccionados, numeroPresupuesto, 
   let y = 18;
 
   doc.setFillColor(24, 32, 51);
-  doc.rect(0, 0, 210, 42, "F");
+doc.rect(0, 0, 210, 42, "F");
 
-  if (logo) {
-    doc.addImage(logo, "PNG", 16, 8, 42, 22);
-  }
+if (logo) {
+  doc.addImage(logo, "PNG", 14, 9, 38, 18);
+}
 
-  doc.setTextColor(255, 255, 255);
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(18);
-  doc.text("PRESUPUESTO PROFESIONAL", 68, 16);
+doc.setTextColor(255, 255, 255);
+doc.setFont("helvetica", "bold");
+doc.setFontSize(16);
+doc.text("PRESUPUESTO PROFESIONAL", 62, 15);
 
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(10);
-  doc.text("Diseño web · Google Business · SEO local · Captación de clientes", 68, 24);
+doc.setFont("helvetica", "normal");
+doc.setFontSize(9);
+doc.text("Diseño web · Google Business · SEO local · Captación de clientes", 62, 24);
 
-  doc.setFontSize(9);
-  doc.text(`Nº: ${numeroPresupuesto}`, 160, 15);
-  doc.text(`Fecha: ${fecha}`, 160, 22);
+doc.setFontSize(8);
+doc.text(`Nº: ${numeroPresupuesto}`, 160, 14);
+doc.text(`Fecha: ${fecha}`, 160, 21);
 
   y = 55;
 
