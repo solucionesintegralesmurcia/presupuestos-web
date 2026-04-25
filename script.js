@@ -308,6 +308,27 @@ function enviarWhatsApp() {
     return;
   }
 
+  const listaServicios = seleccionados.map(s => `• ${s.nombre}`).join("%0A");
+
+  const mensaje = 
+`Hola ${datos.cliente},
+
+Te acabo de preparar el presupuesto para ${datos.negocio}.
+
+🔧 Servicios incluidos:
+${listaServicios}
+
+💰 Precio habitual: ${calculo.subtotal} €
+🔥 Oferta final: ${calculo.total.toFixed(2)} €
+
+📅 Validez: 15 días
+
+Ahora te adjunto el PDF con todos los detalles 👇`;
+
+  const telefono = datos.telefono.replace(/\D/g, "");
+  window.open(`https://wa.me/34${telefono}?text=${mensaje}`, "_blank");
+}
+
   const listaServicios = seleccionados.map(s => `- ${s.nombre}`).join("%0A");
 
   const mensaje = `Hola ${datos.cliente}, te paso el resumen del presupuesto para ${datos.negocio}.%0A%0AServicios incluidos:%0A${listaServicios}%0A%0APrecio habitual: ${calculo.subtotal} €%0APrecio oferta: ${calculo.total.toFixed(2)} €%0AMantenimiento recomendado: ${calculo.mensual} €/mes%0A%0AEl presupuesto tiene una validez de 15 días.`;
