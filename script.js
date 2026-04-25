@@ -280,7 +280,19 @@ function crearPDFPremium(doc, datos, calculo, seleccionados, numeroPresupuesto, 
   doc.setDrawColor(24, 32, 51);
   doc.line(15, y, 85, y);
   doc.line(115, y, 185, y);
+y += 20;
 
+doc.setFont("helvetica", "bold");
+doc.setFontSize(10);
+doc.setTextColor(24,32,51);
+doc.text("Contacto", 15, y);
+
+y += 7;
+doc.setFont("helvetica", "normal");
+
+doc.text("Web: www.disenowebmurcia.es", 15, y);
+y += 6;
+doc.text("Teléfono: 639311161", 15, y);
   y += 6;
   doc.setFontSize(9);
   doc.text("Firma del cliente", 30, y);
