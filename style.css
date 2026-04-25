@@ -150,3 +150,20 @@ button:hover {
     gap: 15px;
   }
 }
+.pack {
+  border: 1px solid #e1e5ec;
+  padding: 12px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+
+.extras {
+  margin-top: 10px;
+  display: grid;
+  gap: 6px;
+}
+
+.extras label {
+  font-size: 14px;
+  color: #555;
+}
