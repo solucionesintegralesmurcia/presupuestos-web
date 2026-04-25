@@ -20,12 +20,37 @@
       <input id="telefono" placeholder="Teléfono">
     </div>
 
-    <h2>Packs rápidos</h2>
     <div class="packs">
-      <button onclick="aplicarPack('basico')">Pack Básico</button>
-      <button onclick="aplicarPack('local')">Pack Local</button>
-      <button onclick="aplicarPack('completo')">Pack Completo</button>
+
+  <div class="pack">
+    <button onclick="aplicarPack('basico')">Pack Básico</button>
+    <div class="extras">
+      <label><input type="checkbox" value="3"> SEO local inicial</label>
+      <label><input type="checkbox" value="4"> Hosting y dominio</label>
+      <label><input type="checkbox" value="5"> WhatsApp y llamadas</label>
     </div>
+  </div>
+
+  <div class="pack">
+    <button onclick="aplicarPack('local')">Pack Local</button>
+    <div class="extras">
+      <label><input type="checkbox" value="3"> SEO local inicial</label>
+      <label><input type="checkbox" value="6"> Textos SEO</label>
+      <label><input type="checkbox" value="7"> Mantenimiento mensual</label>
+    </div>
+  </div>
+
+  <div class="pack">
+    <button onclick="aplicarPack('completo')">Pack Completo</button>
+    <div class="extras">
+      <label><input type="checkbox" value="3"> SEO local inicial</label>
+      <label><input type="checkbox" value="4"> Hosting y dominio</label>
+      <label><input type="checkbox" value="6"> Textos SEO</label>
+      <label><input type="checkbox" value="7"> Mantenimiento mensual</label>
+    </div>
+  </div>
+
+</div>
 
     <h2>Servicios</h2>
     <div id="servicios" class="servicios"></div>
