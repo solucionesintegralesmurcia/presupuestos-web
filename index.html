@@ -1,71 +1,110 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Generador PRO</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generador PRO de Presupuestos</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
 <main class="app">
-<section class="card">
+  <section class="card">
 
-<h1>Generador PRO de Presupuestos</h1>
+    <div class="top">
+      <div>
+        <h1>Generador PRO de Presupuestos</h1>
+        <p class="intro">Webs, Google Business, SEO local, hosting y mantenimiento.</p>
+      </div>
+      <img src="logo.png" alt="Logo" class="logo-app">
+    </div>
 
-<div class="grid">
-<input id="cliente" placeholder="Cliente">
-<input id="negocio" placeholder="Negocio">
-<input id="ciudad" placeholder="Ciudad">
-<input id="telefono" placeholder="Teléfono">
-</div>
+    <h2>Datos del cliente</h2>
 
-<h2>Packs rápidos</h2>
+    <div class="grid">
+      <input id="cliente" placeholder="Nombre del cliente">
+      <input id="negocio" placeholder="Nombre del negocio">
+      <input id="ciudad" placeholder="Ciudad">
+      <input id="telefono" placeholder="Teléfono WhatsApp">
+    </div>
 
-<div class="packs">
-<button onclick="aplicarPack('basico')">Pack Básico</button>
-<button onclick="aplicarPack('local')">Pack Local</button>
-<button onclick="aplicarPack('completo')">Pack Completo</button>
-</div>
+    <h2>Packs rápidos</h2>
 
-<h2>Servicios</h2>
-<div id="servicios"></div>
+    <div class="packs">
 
-<h2>Configuración</h2>
+      <div class="pack-card">
+        <button class="pack-btn" onclick="aplicarPack('basico')">Pack Básico</button>
+        <p>Landing profesional + contacto directo.</p>
+        <div class="pack-extras">
+          <label><input type="checkbox" class="extra-check" value="3"> Añadir SEO local</label>
+          <label><input type="checkbox" class="extra-check" value="4"> Añadir hosting anual</label>
+          <label><input type="checkbox" class="extra-check" value="6"> Añadir textos SEO</label>
+        </div>
+      </div>
 
-<div class="grid">
-<input id="descuento" type="number" value="0">
-<select id="iva">
-<option value="0">Sin IVA</option>
-<option value="21">+21% IVA</option>
-</select>
-</div>
+      <div class="pack-card">
+        <button class="pack-btn" onclick="aplicarPack('local')">Pack Local</button>
+        <p>Landing + Google Business + SEO local.</p>
+        <div class="pack-extras">
+          <label><input type="checkbox" class="extra-check" value="4"> Añadir hosting anual</label>
+          <label><input type="checkbox" class="extra-check" value="6"> Añadir textos SEO</label>
+          <label><input type="checkbox" class="extra-check" value="7"> Añadir mantenimiento</label>
+        </div>
+      </div>
 
-<div class="total-box">
-<div>
-<p>Precio normal</p>
-<strong id="subtotal">0 €</strong>
-</div>
+      <div class="pack-card">
+        <button class="pack-btn" onclick="aplicarPack('completo')">Pack Completo</button>
+        <p>Web completa + Google Business + SEO + mantenimiento.</p>
+        <div class="pack-extras">
+          <label><input type="checkbox" class="extra-check" value="8"> Añadir blog inicial</label>
+          <label><input type="checkbox" class="extra-check" value="9"> Añadir logo básico</label>
+          <label><input type="checkbox" class="extra-check" value="10"> Añadir Search Console</label>
+        </div>
+      </div>
 
-<div>
-<p>Precio oferta</p>
-<strong id="total">0 €</strong>
-</div>
-</div>
+    </div>
 
-<div class="mensual-box">
-<strong id="mensual">0 €/mes</strong>
-</div>
+    <h2>Servicios seleccionables</h2>
+    <div id="servicios" class="servicios"></div>
 
-<textarea id="observaciones" placeholder="Observaciones"></textarea>
+    <h2>Configuración</h2>
 
-<div class="actions">
-<button onclick="generarPDF()">PDF</button>
-<button onclick="generarYEnviar()">PDF + WhatsApp</button>
-</div>
+    <div class="grid">
+      <input id="descuento" type="number" placeholder="Descuento €" value="0">
+      <select id="iva">
+        <option value="0">Sin IVA</option>
+        <option value="21">Añadir 21% IVA</option>
+      </select>
+    </div>
 
-</section>
+    <div class="total-box">
+      <div>
+        <p>Precio habitual</p>
+        <strong id="subtotal">0 €</strong>
+      </div>
+      <div>
+        <p>Oferta final</p>
+        <strong id="total">0 €</strong>
+      </div>
+    </div>
+
+    <div class="mensual-box">
+      <p>Mantenimiento mensual</p>
+      <strong id="mensual">0 €/mes</strong>
+    </div>
+
+    <textarea id="observaciones" placeholder="Observaciones para el presupuesto"></textarea>
+
+    <div class="actions">
+      <button onclick="guardarCliente()">Guardar cliente</button>
+      <button onclick="generarPDF()">Generar PDF</button>
+      <button onclick="generarYEnviar()">PDF + WhatsApp</button>
+    </div>
+
+    <h2>Clientes guardados</h2>
+    <div id="clientesGuardados" class="clientes"></div>
+
+  </section>
 </main>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
