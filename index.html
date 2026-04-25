@@ -1,71 +1,71 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Generador PRO de Presupuestos</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generador PRO de Presupuestos</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
 <main class="app">
+  <section class="card">
+    <h1>Generador PRO de Presupuestos</h1>
+    <p class="intro">Presupuestos profesionales para webs, Google Business, SEO y mantenimiento.</p>
 
-<section class="card">
+    <div class="grid">
+      <input id="cliente" placeholder="Cliente">
+      <input id="negocio" placeholder="Negocio">
+      <input id="ciudad" placeholder="Ciudad">
+      <input id="telefono" placeholder="Teléfono">
+    </div>
 
-<h1>Generador PRO de Presupuestos</h1>
+    <h2>Packs rápidos</h2>
+    <div class="packs">
+      <button onclick="aplicarPack('basico')">Pack Básico</button>
+      <button onclick="aplicarPack('local')">Pack Local</button>
+      <button onclick="aplicarPack('completo')">Pack Completo</button>
+    </div>
 
-<div class="grid">
-<input id="cliente" placeholder="Cliente">
-<input id="negocio" placeholder="Negocio">
-<input id="ciudad" placeholder="Ciudad">
-<input id="telefono" placeholder="Teléfono">
-</div>
+    <h2>Servicios</h2>
+    <div id="servicios" class="servicios"></div>
 
-<h2>Packs rápidos</h2>
+    <h2>Configuración</h2>
+    <div class="grid">
+      <input id="descuento" type="number" placeholder="Descuento €" value="0">
+      <select id="iva">
+        <option value="0">Sin IVA</option>
+        <option value="21">+21% IVA</option>
+      </select>
+    </div>
 
-<div class="packs">
-<button onclick="aplicarPack('basico')">Pack Básico</button>
-<button onclick="aplicarPack('local')">Pack Local</button>
-<button onclick="aplicarPack('completo')">Pack Completo</button>
-</div>
+    <div class="total-box">
+      <div>
+        <p>Precio normal</p>
+        <strong id="subtotal">0 €</strong>
+      </div>
+      <div>
+        <p>Precio oferta</p>
+        <strong id="total">0 €</strong>
+      </div>
+    </div>
 
-<h2>Servicios</h2>
-<div id="servicios" class="servicios"></div>
+    <div class="mensual-box">
+      <p>Mantenimiento mensual recomendado</p>
+      <strong id="mensual">0 €/mes</strong>
+    </div>
 
-<h2>Configuración</h2>
+    <textarea id="observaciones" placeholder="Observaciones"></textarea>
 
-<div class="grid">
-<input id="descuento" type="number" placeholder="Descuento €" value="0">
+    <div class="actions">
+      <button onclick="guardarCliente()">Guardar cliente</button>
+      <button onclick="generarPDF()">Generar PDF</button>
+      <button onclick="enviarWhatsApp()">Enviar por WhatsApp</button>
+    </div>
 
-<select id="iva">
-<option value="0">Sin IVA</option>
-<option value="21">+21% IVA</option>
-</select>
-</div>
-
-<div class="total-box">
-<div>
-<p>Precio real</p>
-<strong id="subtotal">0 €</strong>
-</div>
-
-<div>
-<p>Precio final</p>
-<strong id="total">0 €</strong>
-</div>
-</div>
-
-<div class="mensual-box">
-<p>Mantenimiento mensual recomendado</p>
-<strong id="mensual">0 €/mes</strong>
-</div>
-
-<textarea id="observaciones" placeholder="Observaciones"></textarea>
-
-<button onclick="generarPDF()">Generar PDF PRO</button>
-
-</section>
+    <h2>Clientes guardados</h2>
+    <div id="clientesGuardados" class="clientes"></div>
+  </section>
 </main>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
