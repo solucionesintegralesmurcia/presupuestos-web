@@ -1,6 +1,6 @@
 const servicios = [
   {
-    nombre: "Web básica para captar clientes",
+    nombre: "Web profesional para captar clientes",
     precio: 497,
     tipo: "unico",
     descripcion: "Web profesional enfocada a convertir visitas en clientes. Diseño claro, rápido y adaptado a móvil, con contacto directo por WhatsApp y llamada para facilitar que el cliente pida información al momento."
