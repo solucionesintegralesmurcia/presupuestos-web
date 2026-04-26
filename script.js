@@ -444,32 +444,6 @@ doc.text("- El objetivo es mejorar imagen profesional, visibilidad y captación 
 
 y += 12;
 
-// FIRMAS
-doc.setDrawColor(24, 32, 51);
-doc.line(15, y, 85, y);
-doc.line(115, y, 185, y);
-
-y += 5;
-
-doc.setFontSize(7.5);
-doc.text("Firma del cliente", 30, y);
-doc.text("Firma / sello empresa", 130, y);
-
-y += 10;
-
-// CONTACTO
-doc.setFont("helvetica", "bold");
-doc.setFontSize(8);
-doc.text("Datos de contacto", 15, y);
-
-y += 5;
-
-doc.setFont("helvetica", "normal");
-doc.text("Web: www.disenowebmurcia.es", 15, y);
-
-y += 5;
-doc.text("Teléfono: 639311161", 15, y);
-
   // PIE
   doc.setFillColor(24, 32, 51);
   doc.rect(0, 284, 210, 13, "F");
