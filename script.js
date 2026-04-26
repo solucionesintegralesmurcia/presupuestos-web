@@ -259,201 +259,205 @@ function generarPDF() {
 }
 
 function crearPDFPremium(doc, datos, calculo, seleccionados, numeroPresupuesto, fecha, logo) {
-  let y = 18;
+  let y = 12;
 
+  // CABECERA COMPACTA
   doc.setFillColor(24, 32, 51);
-  doc.rect(0, 0, 210, 42, "F");
+  doc.rect(0, 0, 210, 34, "F");
 
   if (logo) {
-    doc.addImage(logo, "PNG", 14, 9, 38, 18);
+    doc.addImage(logo, "PNG", 14, 8, 32, 15);
   }
 
   doc.setTextColor(255, 255, 255);
   doc.setFont("helvetica", "bold");
-  doc.setFontSize(16);
-  doc.text("PLAN WEB PARA CONSEGUIR CLIENTES", 62, 15);
+  doc.setFontSize(13);
+  doc.text("PLAN WEB PARA CONSEGUIR CLIENTES", 55, 13);
 
   doc.setFont("helvetica", "normal");
-  doc.setFontSize(9);
-  doc.text("Diseño web · Google Business · SEO local · Captación de clientes", 62, 24);
-
   doc.setFontSize(8);
-  doc.text(`Nº: ${numeroPresupuesto}`, 160, 14);
-  doc.text(`Fecha: ${fecha}`, 160, 21);
+  doc.text("Diseño web · Google Business · SEO local · Captación de clientes", 55, 22);
 
-  y = 55;
+  doc.setFontSize(7);
+  doc.text(`Nº: ${numeroPresupuesto}`, 162, 12);
+  doc.text(`Fecha: ${fecha}`, 162, 19);
 
+  y = 43;
+
+  // DATOS CLIENTE COMPACTOS
   doc.setTextColor(24, 32, 51);
   doc.setFillColor(245, 247, 250);
-  doc.roundedRect(15, y, 180, 36, 5, 5, "F");
+  doc.roundedRect(15, y, 180, 26, 4, 4, "F");
 
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(12);
-  doc.text("Datos del cliente", 22, y + 10);
-
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(10);
-  doc.text(`Cliente: ${datos.cliente}`, 22, y + 19);
-  doc.text(`Negocio: ${datos.negocio}`, 22, y + 27);
-  doc.text(`Ciudad: ${datos.ciudad}`, 112, y + 19);
-  doc.text(`Teléfono: ${datos.telefono}`, 112, y + 27);
-
-  y += 52;
-
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(13);
-  doc.text("Servicios incluidos", 15, y);
-
-  y += 9;
-
-  seleccionados.forEach(s => {
-  if (y > 225) {
-    doc.addPage();
-    y = 20;
-  }
-
-  doc.setFillColor(250, 251, 252);
-  doc.roundedRect(15, y, 180, 16, 3, 3, "F");
-
-  doc.setTextColor(24, 32, 51);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(10);
-  doc.text(s.nombre, 21, y + 7);
-
-  if (s.gratis) {
-    doc.text(`${s.precio} ${s.tipo === "mensual" ? "€/mes" : "€"}`, 130, y + 7);
-
-    doc.setTextColor(15, 122, 79);
-    doc.text("INCLUIDO GRATIS", 150, y + 7);
-    doc.setTextColor(24, 32, 51);
-  } else {
-    doc.text(`${s.precio} ${s.tipo === "mensual" ? "€/mes" : "€"}`, 168, y + 7);
-  }
-
-  y += 13;
+  doc.text("Datos del cliente", 20, y + 8);
 
   doc.setFont("helvetica", "normal");
   doc.setFontSize(8);
-  doc.setTextColor(24, 32, 51);
+  doc.text(`Cliente: ${datos.cliente}`, 20, y + 16);
+  doc.text(`Negocio: ${datos.negocio}`, 20, y + 22);
+  doc.text(`Ciudad: ${datos.ciudad}`, 115, y + 16);
+  doc.text(`Teléfono: ${datos.telefono}`, 115, y + 22);
 
-  const descripcionLineas = doc.splitTextToSize(s.descripcion || "", 165);
-  doc.text(descripcionLineas, 21, y);
+  y += 38;
 
-  y += descripcionLineas.length * 5 + 8;
-});
+  // SERVICIOS
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(11);
+  doc.text("Servicios incluidos", 15, y);
 
-  y += 4;
+  y += 7;
 
-  if (y > 225) {
+  seleccionados.forEach(s => {
+    if (y > 214) {
+      doc.addPage();
+      y = 18;
+    }
+
+    doc.setFillColor(250, 251, 252);
+    doc.roundedRect(15, y, 180, 12, 3, 3, "F");
+
+    doc.setTextColor(24, 32, 51);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(8.5);
+    doc.text(s.nombre, 20, y + 5);
+
+    if (s.gratis) {
+      doc.text(`${s.precio} ${s.tipo === "mensual" ? "€/mes" : "€"}`, 132, y + 5);
+      doc.setTextColor(15, 122, 79);
+      doc.text("INCLUIDO GRATIS", 150, y + 5);
+      doc.setTextColor(24, 32, 51);
+    } else {
+      doc.text(`${s.precio} ${s.tipo === "mensual" ? "€/mes" : "€"}`, 168, y + 5);
+    }
+
+    y += 8;
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(7);
+    const descripcionLineas = doc.splitTextToSize(s.descripcion || "", 160);
+    doc.text(descripcionLineas, 20, y);
+
+    y += descripcionLineas.length * 3.6 + 4;
+  });
+
+  y += 3;
+
+  // Si queda poco espacio, nueva página
+  if (y > 205) {
     doc.addPage();
-    y = 20;
+    y = 18;
   }
 
+  // RESUMEN ECONÓMICO
   doc.setFillColor(15, 122, 79);
-  doc.roundedRect(15, y, 180, 46, 6, 6, "F");
+  doc.roundedRect(15, y, 180, 34, 5, 5, "F");
 
   doc.setTextColor(255, 255, 255);
   doc.setFont("helvetica", "bold");
-  doc.setFontSize(13);
-  doc.text("Resumen económico", 22, y + 11);
+  doc.setFontSize(11);
+  doc.text("Resumen económico", 22, y + 9);
 
   doc.setFont("helvetica", "normal");
-  doc.setFontSize(10);
+  doc.setFontSize(8);
   const textoHabitual = `Precio habitual: ${calculo.subtotal} €`;
-  doc.text(textoHabitual, 22, y + 23);
+  doc.text(textoHabitual, 22, y + 18);
 
   const anchoTexto = doc.getTextWidth(textoHabitual);
   doc.setDrawColor(255, 255, 255);
-  doc.line(22, y + 22, 22 + anchoTexto, y + 22);
+  doc.line(22, y + 17, 22 + anchoTexto, y + 17);
 
   doc.setFont("helvetica", "bold");
-  doc.setFontSize(19);
-  doc.text(`PRECIO FINAL HOY: ${Math.round(calculo.total)} €`, 22, y + 37);
+  doc.setFontSize(15);
+  doc.text(`PRECIO FINAL HOY: ${Math.round(calculo.total)} €`, 22, y + 29);
 
-  doc.setFontSize(10);
-  doc.text(`Mantenimiento: ${calculo.mensual} €/mes`, 130, y + 37);
+  doc.setFontSize(8);
+  doc.text(`Mantenimiento: ${calculo.mensual} €/mes`, 132, y + 29);
 
-  y += 59;
+  y += 43;
 
+  // DETALLES
   doc.setTextColor(24, 32, 51);
   doc.setFont("helvetica", "bold");
-  doc.setFontSize(12);
+  doc.setFontSize(10);
   doc.text("Detalles", 15, y);
 
-  y += 8;
+  y += 6;
   doc.setFont("helvetica", "normal");
-doc.setFontSize(10);
-doc.text("Validez del presupuesto: 15 días", 15, y);
-y += 7;
+  doc.setFontSize(8);
+  doc.text("Validez del presupuesto: 15 días", 15, y);
 
-  y += 13;
+  y += 10;
 
+  // OBSERVACIONES
   doc.setFont("helvetica", "bold");
   doc.text("Observaciones", 15, y);
 
-  y += 7;
+  y += 6;
   doc.setFont("helvetica", "normal");
   const obs = doc.splitTextToSize(datos.observaciones, 175);
   doc.text(obs, 15, y);
 
-  y += obs.length * 6 + 12;
+  y += obs.length * 4 + 8;
 
-  if (y > 225) {
-    doc.addPage();
-    y = 20;
-  }
-doc.setFont("helvetica", "bold");
-doc.setFontSize(11);
-doc.setTextColor(15, 122, 79);
-doc.text("Siguiente paso", 15, y);
+  // SIGUIENTE PASO
+  doc.setFont("helvetica", "bold");
+  doc.setTextColor(15, 122, 79);
+  doc.text("Siguiente paso", 15, y);
 
-y += 7;
-doc.setFont("helvetica", "normal");
-doc.setFontSize(10);
-doc.setTextColor(24, 32, 51);
-doc.text("Puedes confirmar este presupuesto por WhatsApp y empezamos con tu proyecto.", 15, y);
+  y += 6;
+  doc.setFont("helvetica", "normal");
+  doc.setTextColor(24, 32, 51);
+  doc.text("Puedes confirmar este presupuesto por WhatsApp y empezamos con tu proyecto.", 15, y);
 
-y += 14;
+  y += 10;
+
+  // CONDICIONES
   doc.setFont("helvetica", "bold");
   doc.text("Condiciones", 15, y);
 
-  y += 8;
+  y += 6;
   doc.setFont("helvetica", "normal");
+  doc.setFontSize(7.5);
   doc.text("- Forma de pago recomendada: 50% al inicio y 50% a la entrega.", 15, y);
-  y += 6;
+  y += 5;
   doc.text("- Servicios adicionales no incluidos se presupuestarán aparte.", 15, y);
-  y += 6;
+  y += 5;
   doc.text("- El objetivo es mejorar imagen profesional, visibilidad y captación de clientes.", 15, y);
 
-  y += 20;
+  y += 13;
 
+  // FIRMAS
   doc.setDrawColor(24, 32, 51);
   doc.line(15, y, 85, y);
   doc.line(115, y, 185, y);
 
-  y += 6;
-  doc.setFontSize(9);
-  doc.text("Firma del cliente", 30, y);
-  doc.text("Firma / sello empresa", 132, y);
+  y += 5;
+  doc.setFontSize(7.5);
+  doc.text("Firma del cliente", 33, y);
+  doc.text("Firma / sello empresa", 134, y);
 
-  y += 16;
+  y += 12;
 
+  // CONTACTO
   doc.setFont("helvetica", "bold");
-  doc.setFontSize(10);
+  doc.setFontSize(8);
   doc.text("Datos de contacto", 15, y);
 
-  y += 7;
+  y += 5;
   doc.setFont("helvetica", "normal");
   doc.text("Web: www.disenowebmurcia.es", 15, y);
-  y += 6;
+  y += 5;
   doc.text("Teléfono: 639311161", 15, y);
 
+  // PIE
   doc.setFillColor(24, 32, 51);
-  doc.rect(0, 282, 210, 15, "F");
+  doc.rect(0, 284, 210, 13, "F");
 
   doc.setTextColor(255, 255, 255);
-  doc.setFontSize(8);
-  doc.text("Diseño Web Murcia · www.disenowebmurcia.es · Tel. 639311161", 15, 291);
+  doc.setFontSize(7);
+  doc.text("Diseño Web Murcia · www.disenowebmurcia.es · Tel. 639311161", 15, 292);
 
   const archivo = `presupuesto-${datos.negocio.toLowerCase().replaceAll(" ", "-")}.pdf`;
   doc.save(archivo);
