@@ -323,7 +323,7 @@ function crearPDFPremium(doc, datos, calculo, seleccionados, numeroPresupuesto, 
     if (s.gratis) {
       doc.text(`${s.precio} ${s.tipo === "mensual" ? "€/mes" : "€"}`, 132, y + 7);
       doc.setTextColor(15, 122, 79);
-     doc.text("→ GRATIS", 158, y + 7);
+     doc.text("INCLUIDO GRATIS", 145, y + 7);
       doc.setTextColor(24, 32, 51);
     } else {
       doc.text(`${s.precio} ${s.tipo === "mensual" ? "€/mes" : "€"}`, 168, y + 7);
