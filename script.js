@@ -105,6 +105,11 @@ function pintarServicios() {
           <summary>Ver detalle</summary>
           <p>${s.descripcion}</p>
         </details>
+
+        <label class="gratis-linea">
+          <input type="checkbox" class="gratis-check" value="${i}" onchange="calcular()">
+          Añadir gratis al presupuesto
+        </label>
       </div>
 
       <strong>${s.precio} ${s.tipo === "mensual" ? "€/mes" : "€"}</strong>
@@ -154,12 +159,16 @@ function calcular() {
   let mensual = 0;
 
   document.querySelectorAll(".servicio-check:checked").forEach(c => {
-    const s = servicios[Number(c.value)];
+    const index = Number(c.value);
+    const s = servicios[index];
+    const gratis = document.querySelector(`.gratis-check[value="${index}"]`)?.checked;
 
-    if (s.tipo === "mensual") {
-      mensual += s.precio;
-    } else {
-      subtotal += s.precio;
+    if (!gratis) {
+      if (s.tipo === "mensual") {
+        mensual += s.precio;
+      } else {
+        subtotal += s.precio;
+      }
     }
   });
 
@@ -195,7 +204,16 @@ function datosFormulario() {
 
 function serviciosSeleccionados() {
   return Array.from(document.querySelectorAll(".servicio-check:checked"))
-    .map(c => servicios[Number(c.value)]);
+    .map(c => {
+      const index = Number(c.value);
+      const servicio = servicios[index];
+      const gratis = document.querySelector(`.gratis-check[value="${index}"]`)?.checked || false;
+
+      return {
+        ...servicio,
+        gratis: gratis
+      };
+    });
 }
 
 function generarNumeroPresupuesto() {
@@ -295,7 +313,13 @@ doc.setFont("helvetica", "bold");
 doc.setFontSize(10);
 doc.text(s.nombre, 21, y + 7);
 
-doc.text(`${s.precio} ${s.tipo === "mensual" ? "€/mes" : "€"}`, 168, y + 7);
+if (s.gratis) {
+  doc.setTextColor(15, 122, 79);
+  doc.text("Incluido gratis", 145, y + 7);
+  doc.setTextColor(24, 32, 51);
+} else {
+  doc.text(`${s.precio} ${s.tipo === "mensual" ? "€/mes" : "€"}`, 168, y + 7);
+}
 
 y += 12;
 
