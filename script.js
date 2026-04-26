@@ -1,16 +1,88 @@
 const servicios = [
-  { nombre: "Mapa de localización en la web", precio: 67, tipo: "unico" },
-  { nombre: "Landing page profesional", precio: 500, tipo: "unico" },
-  { nombre: "Página web completa", precio: 800, tipo: "unico" },
-  { nombre: "Google Business Profile", precio: 200, tipo: "unico" },
-  { nombre: "SEO local inicial", precio: 300, tipo: "unico" },
-  { nombre: "Hosting y dominio anual", precio: 150, tipo: "unico" },
-  { nombre: "WhatsApp + llamadas", precio: 80, tipo: "unico" },
-  { nombre: "Textos SEO profesionales", precio: 180, tipo: "unico" },
-  { nombre: "Mantenimiento mensual", precio: 120, tipo: "mensual" },
-  { nombre: "Blog inicial SEO", precio: 220, tipo: "unico" },
-  { nombre: "Logo básico profesional", precio: 90, tipo: "unico" },
-  { nombre: "Alta en Google Search Console", precio: 90, tipo: "unico" }
+  {
+    nombre: "Web básica para captar clientes",
+    precio: 497,
+    tipo: "unico",
+    descripcion: "Página profesional sencilla para empezar a recibir contactos. Incluye estructura clara, diseño adaptado a móvil y botones de contacto directo."
+  },
+  {
+    nombre: "Web completa profesional",
+    precio: 897,
+    tipo: "unico",
+    descripcion: "Web con varias secciones para presentar mejor el negocio, explicar servicios y transmitir más confianza al cliente."
+  },
+  {
+    nombre: "Google Business optimizado",
+    precio: 147,
+    tipo: "unico",
+    descripcion: "Configuración y mejora de la ficha de Google para aparecer mejor en búsquedas locales y Google Maps."
+  },
+  {
+    nombre: "SEO local inicial",
+    precio: 247,
+    tipo: "unico",
+    descripcion: "Optimización básica para que Google entienda tu negocio, tu zona y los servicios que ofreces."
+  },
+  {
+    nombre: "Hosting anual",
+    precio: 97,
+    tipo: "unico",
+    descripcion: "Alojamiento donde estará publicada la web para que funcione online durante todo el año."
+  },
+  {
+    nombre: "Dominio anual",
+    precio: 47,
+    tipo: "unico",
+    descripcion: "Nombre profesional de la web, por ejemplo tunegocio.com, para dar mejor imagen y facilitar que te encuentren."
+  },
+  {
+    nombre: "WhatsApp + llamadas directas",
+    precio: 67,
+    tipo: "unico",
+    descripcion: "Botones de contacto directo para que el cliente pueda llamar o escribir por WhatsApp en un solo clic."
+  },
+  {
+    nombre: "Textos SEO optimizados",
+    precio: 147,
+    tipo: "unico",
+    descripcion: "Textos preparados para explicar el servicio, captar clientes y ayudar al posicionamiento en Google."
+  },
+  {
+    nombre: "Mantenimiento web",
+    precio: 97,
+    tipo: "mensual",
+    descripcion: "Servicio mensual para mantener la web actualizada, realizar pequeños cambios y revisar que todo funcione correctamente."
+  },
+  {
+    nombre: "Blog SEO inicial",
+    precio: 197,
+    tipo: "unico",
+    descripcion: "Contenido inicial pensado para atraer visitas desde Google y mejorar la visibilidad del negocio."
+  },
+  {
+    nombre: "Logo profesional básico",
+    precio: 67,
+    tipo: "unico",
+    descripcion: "Diseño de un logotipo sencillo y profesional para mejorar la imagen del negocio."
+  },
+  {
+    nombre: "Pack Estudio SEO + Dominio",
+    precio: 197,
+    tipo: "unico",
+    descripcion: "Estudio de palabras clave y recomendación de dominio estratégico para empezar la web con mejor enfoque."
+  },
+  {
+    nombre: "Configuración en Google Search Console",
+    precio: 57,
+    tipo: "unico",
+    descripcion: "Alta y configuración de la web en Google para facilitar su indexación y seguimiento básico."
+  },
+  {
+    nombre: "Mapa de localización en la web",
+    precio: 67,
+    tipo: "unico",
+    descripcion: "Inserción de mapa de localización para que el cliente vea fácilmente dónde está el negocio o zona de servicio."
+  }
 ];
 
 const contenedor = document.getElementById("servicios");
