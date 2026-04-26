@@ -271,7 +271,7 @@ function crearPDFPremium(doc, datos, calculo, seleccionados, numeroPresupuesto, 
   doc.setTextColor(255, 255, 255);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(16);
-  doc.text("PRESUPUESTO PROFESIONAL", 62, 15);
+  doc.text("WEB DISEÑADA PARA CONSEGUIR CLIENTES", 62, 15);
 
   doc.setFont("helvetica", "normal");
   doc.setFontSize(9);
