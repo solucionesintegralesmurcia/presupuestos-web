@@ -310,37 +310,41 @@ function crearPDFPremium(doc, datos, calculo, seleccionados, numeroPresupuesto, 
   y += 7;
 
   seleccionados.forEach(s => {
-    if (y > 214) {
-      doc.addPage();
-      y = 18;
-    }
+  if (y > 220) {
+    doc.addPage();
+    y = 18;
+  }
 
-    doc.setFillColor(250, 251, 252);
-    doc.roundedRect(15, y, 180, 12, 3, 3, "F");
+  doc.setFillColor(250, 251, 252);
+  doc.roundedRect(15, y, 180, 13, 3, 3, "F");
 
+  // Nombre
+  doc.setTextColor(24, 32, 51);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(8.5);
+  doc.text(s.nombre, 20, y + 5);
+
+  // Precio alineado
+  const precioTexto = `${s.precio} ${s.tipo === "mensual" ? "€/mes" : "€"}`;
+  doc.text(precioTexto, 130, y + 5);
+
+  if (s.gratis) {
+    doc.setTextColor(15, 122, 79);
+    doc.text("INCLUIDO GRATIS", 160, y + 5);
     doc.setTextColor(24, 32, 51);
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(8.5);
-    doc.text(s.nombre, 20, y + 5);
+  }
 
-    if (s.gratis) {
-      doc.text(`${s.precio} ${s.tipo === "mensual" ? "€/mes" : "€"}`, 132, y + 5);
-      doc.setTextColor(15, 122, 79);
-      doc.text("INCLUIDO GRATIS", 150, y + 5);
-      doc.setTextColor(24, 32, 51);
-    } else {
-      doc.text(`${s.precio} ${s.tipo === "mensual" ? "€/mes" : "€"}`, 168, y + 5);
-    }
+  y += 8;
 
-    y += 8;
+  // Descripción más compacta y mejor partida
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(7.2);
 
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(7);
-    const descripcionLineas = doc.splitTextToSize(s.descripcion || "", 160);
-    doc.text(descripcionLineas, 20, y);
+  const descripcionLineas = doc.splitTextToSize(s.descripcion || "", 150);
+  doc.text(descripcionLineas, 20, y);
 
-    y += descripcionLineas.length * 3.6 + 4;
-  });
+  y += descripcionLineas.length * 3.8 + 5;
+});
 
   y += 3;
 
