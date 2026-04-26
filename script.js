@@ -121,11 +121,12 @@ function pintarServicios() {
 
 function aplicarPack(tipo) {
   document.querySelectorAll(".servicio-check").forEach(c => c.checked = false);
+  document.querySelectorAll(".gratis-check").forEach(c => c.checked = false);
   document.querySelectorAll(".extra-btn").forEach(b => b.classList.remove("activo"));
 
-  if (tipo === "basico") marcarServicios([0, 5]);
-  if (tipo === "local") marcarServicios([0, 2, 3, 5]);
-  if (tipo === "completo") marcarServicios([1, 2, 3, 4, 5, 6, 7]);
+  if (tipo === "basico") marcarServicios([0, 6, 11]);
+  if (tipo === "local") marcarServicios([0, 2, 3, 6, 11]);
+  if (tipo === "completo") marcarServicios([1, 2, 3, 6, 7, 11]);
 
   calcular();
 }
@@ -188,13 +189,23 @@ function calcular() {
   document.getElementById("total").textContent = total.toFixed(2) + " €";
   document.getElementById("mensual").textContent = mensual + " €/mes";
 
-  return { 
-    subtotal: precioHabitual, 
-    descuento, 
-    iva, 
-    total, 
+  return {
+    subtotal: precioHabitual,
+    descuento,
+    iva,
+    total,
     mensual,
     mensualHabitual
+  };
+}
+
+function datosFormulario() {
+  return {
+    cliente: document.getElementById("cliente").value || "Cliente sin indicar",
+    negocio: document.getElementById("negocio").value || "Negocio sin indicar",
+    ciudad: document.getElementById("ciudad").value || "Ciudad sin indicar",
+    telefono: document.getElementById("telefono").value || "",
+    observaciones: document.getElementById("observaciones").value || "Sin observaciones adicionales."
   };
 }
 
@@ -207,7 +218,7 @@ function serviciosSeleccionados() {
 
       return {
         ...servicio,
-        gratis: gratis
+        gratis
       };
     });
 }
@@ -251,24 +262,24 @@ function crearPDFPremium(doc, datos, calculo, seleccionados, numeroPresupuesto, 
   let y = 18;
 
   doc.setFillColor(24, 32, 51);
-doc.rect(0, 0, 210, 42, "F");
+  doc.rect(0, 0, 210, 42, "F");
 
-if (logo) {
-  doc.addImage(logo, "PNG", 14, 9, 38, 18);
-}
+  if (logo) {
+    doc.addImage(logo, "PNG", 14, 9, 38, 18);
+  }
 
-doc.setTextColor(255, 255, 255);
-doc.setFont("helvetica", "bold");
-doc.setFontSize(16);
-doc.text("PRESUPUESTO PROFESIONAL", 62, 15);
+  doc.setTextColor(255, 255, 255);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(16);
+  doc.text("PRESUPUESTO PROFESIONAL", 62, 15);
 
-doc.setFont("helvetica", "normal");
-doc.setFontSize(9);
-doc.text("Diseño web · Google Business · SEO local · Captación de clientes", 62, 24);
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(9);
+  doc.text("Diseño web · Google Business · SEO local · Captación de clientes", 62, 24);
 
-doc.setFontSize(8);
-doc.text(`Nº: ${numeroPresupuesto}`, 160, 14);
-doc.text(`Fecha: ${fecha}`, 160, 21);
+  doc.setFontSize(8);
+  doc.text(`Nº: ${numeroPresupuesto}`, 160, 14);
+  doc.text(`Fecha: ${fecha}`, 160, 21);
 
   y = 55;
 
@@ -296,45 +307,44 @@ doc.text(`Fecha: ${fecha}`, 160, 21);
   y += 9;
 
   seleccionados.forEach(s => {
-  if (y > 230) {
-    doc.addPage();
-    y = 20;
-  }
+    if (y > 230) {
+      doc.addPage();
+      y = 20;
+    }
 
-  doc.setFillColor(250, 251, 252);
-  doc.roundedRect(15, y, 180, 11, 3, 3, "F");
+    doc.setFillColor(250, 251, 252);
+    doc.roundedRect(15, y, 180, 11, 3, 3, "F");
 
-  doc.setTextColor(24, 32, 51);
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(10);
-  doc.text(s.nombre, 21, y + 7);
-
-  if (s.gratis) {
-    doc.text(`${s.precio} ${s.tipo === "mensual" ? "€/mes" : "€"}`, 138, y + 7);
-
-    doc.setTextColor(15, 122, 79);
-    doc.text("Incluido gratis", 155, y + 7);
     doc.setTextColor(24, 32, 51);
-  } else {
-    doc.text(`${s.precio} ${s.tipo === "mensual" ? "€/mes" : "€"}`, 168, y + 7);
-  }
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(10);
+    doc.text(s.nombre, 21, y + 7);
 
-  y += 12;
+    if (s.gratis) {
+      doc.text(`${s.precio} ${s.tipo === "mensual" ? "€/mes" : "€"}`, 132, y + 7);
+      doc.setTextColor(15, 122, 79);
+      doc.text("Gratis", 170, y + 7);
+      doc.setTextColor(24, 32, 51);
+    } else {
+      doc.text(`${s.precio} ${s.tipo === "mensual" ? "€/mes" : "€"}`, 168, y + 7);
+    }
 
-  // 🔥 SOLUCIÓN CLAVE: evitar error si no hay descripción
-  if (s.descripcion) {
+    y += 12;
+
     doc.setFont("helvetica", "normal");
     doc.setFontSize(8);
-    const descripcionLineas = doc.splitTextToSize(s.descripcion, 160);
+    const descripcionLineas = doc.splitTextToSize(s.descripcion || "", 160);
     doc.text(descripcionLineas, 21, y);
 
     y += descripcionLineas.length * 5 + 5;
-  } else {
-    y += 6;
-  }
-});
+  });
 
   y += 8;
+
+  if (y > 225) {
+    doc.addPage();
+    y = 20;
+  }
 
   doc.setFillColor(15, 122, 79);
   doc.roundedRect(15, y, 180, 46, 6, 6, "F");
@@ -520,6 +530,9 @@ function cargarCliente(index) {
   document.getElementById("telefono").value = c.telefono;
   document.getElementById("observaciones").value = c.observaciones;
 }
+
+document.getElementById("descuento").addEventListener("input", calcular);
+document.getElementById("iva").addEventListener("change", calcular);
 
 pintarServicios();
 sincronizarExtras();
