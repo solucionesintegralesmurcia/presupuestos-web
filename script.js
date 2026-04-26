@@ -383,77 +383,88 @@ function crearPDFPremium(doc, datos, calculo, seleccionados, numeroPresupuesto, 
 
   // DETALLES
   doc.setTextColor(24, 32, 51);
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(10);
-  doc.text("Detalles", 15, y);
 
-  y += 6;
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(8);
-  doc.text("Validez del presupuesto: 15 días", 15, y);
+// DETALLES
+doc.setFont("helvetica", "bold");
+doc.setFontSize(10);
+doc.text("Detalles", 15, y);
 
-  y += 10;
+y += 6;
 
-  // OBSERVACIONES
-  doc.setFont("helvetica", "bold");
-  doc.text("Observaciones", 15, y);
+doc.setFont("helvetica", "normal");
+doc.setFontSize(8);
+doc.text("Validez del presupuesto: 15 días", 15, y);
 
-  y += 6;
-  doc.setFont("helvetica", "normal");
-  const obs = doc.splitTextToSize(datos.observaciones, 175);
-  doc.text(obs, 15, y);
+y += 10;
 
-  y += obs.length * 4 + 8;
+// OBSERVACIONES
+doc.setFont("helvetica", "bold");
+doc.text("Observaciones", 15, y);
 
-  // SIGUIENTE PASO
-  doc.setFont("helvetica", "bold");
-  doc.setTextColor(15, 122, 79);
-  doc.text("Siguiente paso", 15, y);
+y += 6;
 
-  y += 6;
-  doc.setFont("helvetica", "normal");
-  doc.setTextColor(24, 32, 51);
-  doc.text("Puedes confirmar este presupuesto por WhatsApp y empezamos con tu proyecto.", 15, y);
+doc.setFont("helvetica", "normal");
+const obs = doc.splitTextToSize(datos.observaciones, 170);
+doc.text(obs, 15, y);
 
-  y += 10;
+y += obs.length * 4 + 10;
 
-  // CONDICIONES
-  doc.setFont("helvetica", "bold");
-  doc.text("Condiciones", 15, y);
+// SIGUIENTE PASO
+doc.setFont("helvetica", "bold");
+doc.setTextColor(15, 122, 79);
+doc.text("Siguiente paso", 15, y);
 
-  y += 6;
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(7.5);
-  doc.text("- Forma de pago recomendada: 50% al inicio y 50% a la entrega.", 15, y);
-  y += 5;
-  doc.text("- Servicios adicionales no incluidos se presupuestarán aparte.", 15, y);
-  y += 5;
-  doc.text("- El objetivo es mejorar imagen profesional, visibilidad y captación de clientes.", 15, y);
+y += 6;
 
-  y += 13;
+doc.setFont("helvetica", "normal");
+doc.setTextColor(24, 32, 51);
+doc.text("Puedes confirmar este presupuesto por WhatsApp y empezamos con tu proyecto.", 15, y);
 
-  // FIRMAS
-  doc.setDrawColor(24, 32, 51);
-  doc.line(15, y, 85, y);
-  doc.line(115, y, 185, y);
+y += 12;
 
-  y += 5;
-  doc.setFontSize(7.5);
-  doc.text("Firma del cliente", 33, y);
-  doc.text("Firma / sello empresa", 134, y);
+// CONDICIONES
+doc.setFont("helvetica", "bold");
+doc.text("Condiciones", 15, y);
 
-  y += 12;
+y += 6;
 
-  // CONTACTO
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(8);
-  doc.text("Datos de contacto", 15, y);
+doc.setFont("helvetica", "normal");
+doc.setFontSize(7.5);
+doc.text("- Forma de pago recomendada: 50% al inicio y 50% a la entrega.", 15, y);
 
-  y += 5;
-  doc.setFont("helvetica", "normal");
-  doc.text("Web: www.disenowebmurcia.es", 15, y);
-  y += 5;
-  doc.text("Teléfono: 639311161", 15, y);
+y += 5;
+doc.text("- Servicios adicionales no incluidos se presupuestarán aparte.", 15, y);
+
+y += 5;
+doc.text("- El objetivo es mejorar imagen profesional, visibilidad y captación de clientes.", 15, y);
+
+y += 12;
+
+// FIRMAS
+doc.setDrawColor(24, 32, 51);
+doc.line(15, y, 85, y);
+doc.line(115, y, 185, y);
+
+y += 5;
+
+doc.setFontSize(7.5);
+doc.text("Firma del cliente", 30, y);
+doc.text("Firma / sello empresa", 130, y);
+
+y += 10;
+
+// CONTACTO
+doc.setFont("helvetica", "bold");
+doc.setFontSize(8);
+doc.text("Datos de contacto", 15, y);
+
+y += 5;
+
+doc.setFont("helvetica", "normal");
+doc.text("Web: www.disenowebmurcia.es", 15, y);
+
+y += 5;
+doc.text("Teléfono: 639311161", 15, y);
 
   // PIE
   doc.setFillColor(24, 32, 51);
