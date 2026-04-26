@@ -271,7 +271,7 @@ function crearPDFPremium(doc, datos, calculo, seleccionados, numeroPresupuesto, 
   doc.setTextColor(255, 255, 255);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(16);
-  doc.text("WEB DISEÑADA PARA CONSEGUIR CLIENTES", 62, 15);
+  doc.text("PLAN WEB PARA CONSEGUIR CLIENTES", 62, 15);
 
   doc.setFont("helvetica", "normal");
   doc.setFontSize(9);
@@ -323,7 +323,7 @@ function crearPDFPremium(doc, datos, calculo, seleccionados, numeroPresupuesto, 
     if (s.gratis) {
       doc.text(`${s.precio} ${s.tipo === "mensual" ? "€/mes" : "€"}`, 132, y + 7);
       doc.setTextColor(15, 122, 79);
-      doc.text("Gratis", 170, y + 7);
+     doc.text("→ GRATIS", 158, y + 7);
       doc.setTextColor(24, 32, 51);
     } else {
       doc.text(`${s.precio} ${s.tipo === "mensual" ? "€/mes" : "€"}`, 168, y + 7);
@@ -365,7 +365,7 @@ function crearPDFPremium(doc, datos, calculo, seleccionados, numeroPresupuesto, 
 
   doc.setFont("helvetica", "bold");
   doc.setFontSize(19);
-  doc.text(`OFERTA FINAL: ${calculo.total.toFixed(2)} €`, 22, y + 37);
+  doc.text(`PRECIO FINAL HOY: ${Math.round(calculo.total)} €`, 22, y + 37);
 
   doc.setFontSize(10);
   doc.text(`Mantenimiento: ${calculo.mensual} €/mes`, 130, y + 37);
@@ -402,7 +402,18 @@ function crearPDFPremium(doc, datos, calculo, seleccionados, numeroPresupuesto, 
     doc.addPage();
     y = 20;
   }
+doc.setFont("helvetica", "bold");
+doc.setFontSize(11);
+doc.setTextColor(15, 122, 79);
+doc.text("Siguiente paso", 15, y);
 
+y += 7;
+doc.setFont("helvetica", "normal");
+doc.setFontSize(10);
+doc.setTextColor(24, 32, 51);
+doc.text("Puedes confirmar este presupuesto por WhatsApp y empezamos con tu proyecto.", 15, y);
+
+y += 14;
   doc.setFont("helvetica", "bold");
   doc.text("Condiciones", 15, y);
 
