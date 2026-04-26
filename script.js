@@ -1,9 +1,9 @@
 const servicios = [
   {
-    nombre: "Web profesional para captar clientes",
+    nombre: "Web profesional",
     precio: 497,
     tipo: "unico",
-    descripcion: "Web profesional enfocada a convertir visitas en clientes. Diseño claro, rápido y adaptado a móvil, con contacto directo por WhatsApp y llamada para facilitar que el cliente pida información al momento."
+    descripcion: "Web profesional. Diseño claro, rápido y adaptado a móvil."
   },
   {
     nombre: "Web completa profesional",
@@ -272,7 +272,7 @@ function crearPDFPremium(doc, datos, calculo, seleccionados, numeroPresupuesto, 
   doc.setTextColor(255, 255, 255);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(13);
-  doc.text("PLAN WEB PARA CONSEGUIR CLIENTES", 55, 13);
+  doc.text("PRESUPUESTO WEB PERSONALIZADO", 55, 13);
 
   doc.setFont("helvetica", "normal");
   doc.setFontSize(8);
@@ -310,7 +310,7 @@ function crearPDFPremium(doc, datos, calculo, seleccionados, numeroPresupuesto, 
   y += 7;
 
   seleccionados.forEach(s => {
-  if (y > 220) {
+  if (y > 218) {
     doc.addPage();
     y = 18;
   }
@@ -318,35 +318,39 @@ function crearPDFPremium(doc, datos, calculo, seleccionados, numeroPresupuesto, 
   doc.setFillColor(250, 251, 252);
   doc.roundedRect(15, y, 180, 13, 3, 3, "F");
 
-  // Nombre
   doc.setTextColor(24, 32, 51);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(8.5);
-  doc.text(s.nombre, 20, y + 5);
 
-  // Precio alineado
-  const precioTexto = `${s.precio} ${s.tipo === "mensual" ? "€/mes" : "€"}`;
-  doc.text(precioTexto, 130, y + 5);
+  const nombreLineas = doc.splitTextToSize(s.nombre, 92);
+  doc.text(nombreLineas, 20, y + 5);
+
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(8);
 
   if (s.gratis) {
+    doc.text(`${s.precio} ${s.tipo === "mensual" ? "€/mes" : "€"}`, 126, y + 5);
+
     doc.setTextColor(15, 122, 79);
-    doc.text("INCLUIDO GRATIS", 160, y + 5);
+    doc.text("INCLUIDO GRATIS", 150, y + 5);
     doc.setTextColor(24, 32, 51);
+  } else {
+    doc.text(`${s.precio} ${s.tipo === "mensual" ? "€/mes" : "€"}`, 170, y + 5);
   }
 
   y += 8;
 
-  // Descripción más compacta y mejor partida
   doc.setFont("helvetica", "normal");
-  doc.setFontSize(7.2);
+  doc.setFontSize(6.8);
+  doc.setTextColor(24, 32, 51);
 
-  const descripcionLineas = doc.splitTextToSize(s.descripcion || "", 150);
+  const descripcionLineas = doc.splitTextToSize(s.descripcion || "", 130);
   doc.text(descripcionLineas, 20, y);
 
-  y += descripcionLineas.length * 3.8 + 5;
+  y += descripcionLineas.length * 3.4 + 5;
 });
 
-  y += 3;
+  y += 1;
 
   // Si queda poco espacio, nueva página
   if (y > 205) {
