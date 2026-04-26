@@ -307,13 +307,13 @@ function crearPDFPremium(doc, datos, calculo, seleccionados, numeroPresupuesto, 
   y += 9;
 
   seleccionados.forEach(s => {
-    if (y > 230) {
+    if (y > 260) {
       doc.addPage();
       y = 20;
     }
 
     doc.setFillColor(250, 251, 252);
-    doc.roundedRect(15, y, 180, 11, 3, 3, "F");
+    doc.roundedRect(15, y, 180, 9, 3, 3, "F");
 
     doc.setTextColor(24, 32, 51);
     doc.setFont("helvetica", "bold");
@@ -329,17 +329,17 @@ function crearPDFPremium(doc, datos, calculo, seleccionados, numeroPresupuesto, 
       doc.text(`${s.precio} ${s.tipo === "mensual" ? "€/mes" : "€"}`, 168, y + 7);
     }
 
-    y += 12;
+    y += 9;
 
     doc.setFont("helvetica", "normal");
     doc.setFontSize(8);
     const descripcionLineas = doc.splitTextToSize(s.descripcion || "", 160);
     doc.text(descripcionLineas, 21, y);
 
-    y += descripcionLineas.length * 5 + 5;
+    y += descripcionLineas.length * 4 + 3;
   });
 
-  y += 8;
+  y += 4;
 
   if (y > 225) {
     doc.addPage();
