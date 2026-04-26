@@ -291,14 +291,20 @@ doc.text(`Fecha: ${fecha}`, 160, 21);
     doc.roundedRect(15, y, 180, 11, 3, 3, "F");
 
     doc.setTextColor(24, 32, 51);
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(10);
-    doc.text(s.nombre, 21, y + 7);
+doc.setFont("helvetica", "bold");
+doc.setFontSize(10);
+doc.text(s.nombre, 21, y + 7);
 
-    doc.setFont("helvetica", "bold");
-    doc.text(`${s.precio} €`, 168, y + 7);
+doc.text(`${s.precio} ${s.tipo === "mensual" ? "€/mes" : "€"}`, 168, y + 7);
 
-    y += 14;
+y += 12;
+
+doc.setFont("helvetica", "normal");
+doc.setFontSize(8);
+const descripcionLineas = doc.splitTextToSize(s.descripcion, 160);
+doc.text(descripcionLineas, 21, y);
+
+y += descripcionLineas.length * 5 + 5;
   });
 
   y += 8;
