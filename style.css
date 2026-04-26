@@ -338,3 +338,21 @@ button {
     font-size: 12px;
   }
 }
+.gratis-linea {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  width: fit-content;
+  font-size: 13px;
+  color: #0f7a4f;
+  background: #eef7f2;
+  border: 1px solid #b9ddca;
+  padding: 6px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+  margin-top: 4px;
+}
+
+.gratis-linea input {
+  width: auto;
+}
