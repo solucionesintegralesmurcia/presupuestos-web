@@ -95,11 +95,19 @@ function pintarServicios() {
     div.className = "servicio";
 
     div.innerHTML = `
-      <label>
-        <input type="checkbox" class="servicio-check" value="${i}" onchange="calcular()">
-        ${s.nombre}
-      </label>
-      <strong>${s.precio} €</strong>
+      <div class="servicio-info">
+        <label>
+          <input type="checkbox" class="servicio-check" value="${i}" onchange="calcular()">
+          ${s.nombre}
+        </label>
+
+        <details class="detalle-servicio">
+          <summary>Ver detalle</summary>
+          <p>${s.descripcion}</p>
+        </details>
+      </div>
+
+      <strong>${s.precio} ${s.tipo === "mensual" ? "€/mes" : "€"}</strong>
     `;
 
     contenedor.appendChild(div);
