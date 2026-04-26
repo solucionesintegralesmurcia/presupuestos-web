@@ -379,12 +379,9 @@ function crearPDFPremium(doc, datos, calculo, seleccionados, numeroPresupuesto, 
 
   y += 8;
   doc.setFont("helvetica", "normal");
-  doc.setFontSize(10);
-  doc.text(`Descuento aplicado: ${calculo.descuento} €`, 15, y);
-  y += 7;
-  doc.text(`IVA aplicado: ${calculo.iva}%`, 15, y);
-  y += 7;
-  doc.text("Validez del presupuesto: 15 días", 15, y);
+doc.setFontSize(10);
+doc.text("Validez del presupuesto: 15 días", 15, y);
+y += 7;
 
   y += 13;
 
