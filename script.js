@@ -155,7 +155,9 @@ function sincronizarExtras() {
 }
 
 function calcular() {
+  let precioHabitual = 0;
   let subtotal = 0;
+  let mensualHabitual = 0;
   let mensual = 0;
 
   document.querySelectorAll(".servicio-check:checked").forEach(c => {
@@ -163,12 +165,12 @@ function calcular() {
     const s = servicios[index];
     const gratis = document.querySelector(`.gratis-check[value="${index}"]`)?.checked;
 
-    if (!gratis) {
-      if (s.tipo === "mensual") {
-        mensual += s.precio;
-      } else {
-        subtotal += s.precio;
-      }
+    if (s.tipo === "mensual") {
+      mensualHabitual += s.precio;
+      if (!gratis) mensual += s.precio;
+    } else {
+      precioHabitual += s.precio;
+      if (!gratis) subtotal += s.precio;
     }
   });
 
@@ -182,23 +184,17 @@ function calcular() {
     total = total + (total * iva / 100);
   }
 
-  document.getElementById("subtotal").textContent = subtotal + " €";
+  document.getElementById("subtotal").textContent = precioHabitual + " €";
   document.getElementById("total").textContent = total.toFixed(2) + " €";
   document.getElementById("mensual").textContent = mensual + " €/mes";
 
-  return { subtotal, descuento, iva, total, mensual };
-}
-
-document.getElementById("descuento").addEventListener("input", calcular);
-document.getElementById("iva").addEventListener("change", calcular);
-
-function datosFormulario() {
-  return {
-    cliente: document.getElementById("cliente").value || "Cliente sin indicar",
-    negocio: document.getElementById("negocio").value || "Negocio sin indicar",
-    ciudad: document.getElementById("ciudad").value || "Ciudad sin indicar",
-    telefono: document.getElementById("telefono").value || "",
-    observaciones: document.getElementById("observaciones").value || "Sin observaciones adicionales."
+  return { 
+    subtotal: precioHabitual, 
+    descuento, 
+    iva, 
+    total, 
+    mensual,
+    mensualHabitual
   };
 }
 
@@ -314,8 +310,10 @@ doc.setFontSize(10);
 doc.text(s.nombre, 21, y + 7);
 
 if (s.gratis) {
+  doc.text(`${s.precio} ${s.tipo === "mensual" ? "€/mes" : "€"}`, 138, y + 7);
+
   doc.setTextColor(15, 122, 79);
-  doc.text("Incluido gratis", 145, y + 7);
+  doc.text("Gratis", 170, y + 7);
   doc.setTextColor(24, 32, 51);
 } else {
   doc.text(`${s.precio} ${s.tipo === "mensual" ? "€/mes" : "€"}`, 168, y + 7);
