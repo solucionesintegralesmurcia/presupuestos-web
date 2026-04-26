@@ -296,38 +296,43 @@ doc.text(`Fecha: ${fecha}`, 160, 21);
   y += 9;
 
   seleccionados.forEach(s => {
-    if (y > 230) {
-      doc.addPage();
-      y = 20;
-    }
+  if (y > 230) {
+    doc.addPage();
+    y = 20;
+  }
 
-    doc.setFillColor(250, 251, 252);
-    doc.roundedRect(15, y, 180, 11, 3, 3, "F");
+  doc.setFillColor(250, 251, 252);
+  doc.roundedRect(15, y, 180, 11, 3, 3, "F");
 
-    doc.setTextColor(24, 32, 51);
-doc.setFont("helvetica", "bold");
-doc.setFontSize(10);
-doc.text(s.nombre, 21, y + 7);
-
-if (s.gratis) {
-  doc.text(`${s.precio} ${s.tipo === "mensual" ? "€/mes" : "€"}`, 138, y + 7);
-
-  doc.setTextColor(15, 122, 79);
-  doc.text("Gratis", 170, y + 7);
   doc.setTextColor(24, 32, 51);
-} else {
-  doc.text(`${s.precio} ${s.tipo === "mensual" ? "€/mes" : "€"}`, 168, y + 7);
-}
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(10);
+  doc.text(s.nombre, 21, y + 7);
 
-y += 12;
+  if (s.gratis) {
+    doc.text(`${s.precio} ${s.tipo === "mensual" ? "€/mes" : "€"}`, 138, y + 7);
 
-doc.setFont("helvetica", "normal");
-doc.setFontSize(8);
-const descripcionLineas = doc.splitTextToSize(s.descripcion, 160);
-doc.text(descripcionLineas, 21, y);
+    doc.setTextColor(15, 122, 79);
+    doc.text("Incluido gratis", 155, y + 7);
+    doc.setTextColor(24, 32, 51);
+  } else {
+    doc.text(`${s.precio} ${s.tipo === "mensual" ? "€/mes" : "€"}`, 168, y + 7);
+  }
 
-y += descripcionLineas.length * 5 + 5;
-  });
+  y += 12;
+
+  // 🔥 SOLUCIÓN CLAVE: evitar error si no hay descripción
+  if (s.descripcion) {
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(8);
+    const descripcionLineas = doc.splitTextToSize(s.descripcion, 160);
+    doc.text(descripcionLineas, 21, y);
+
+    y += descripcionLineas.length * 5 + 5;
+  } else {
+    y += 6;
+  }
+});
 
   y += 8;
 
