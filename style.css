@@ -309,3 +309,32 @@ button {
     max-width: 100%;
   }
 }
+.servicio-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.detalle-servicio {
+  font-size: 13px;
+  color: #667085;
+  margin-left: 26px;
+}
+
+.detalle-servicio summary {
+  cursor: pointer;
+  color: #0f7a4f;
+  font-weight: bold;
+}
+
+.detalle-servicio p {
+  margin: 7px 0 0;
+  line-height: 1.45;
+}
+
+@media (max-width: 700px) {
+  .detalle-servicio {
+    margin-left: 0;
+    font-size: 12px;
+  }
+}
