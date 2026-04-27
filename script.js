@@ -399,21 +399,6 @@ function crearPDFPremium(doc, datos, calculo, seleccionados, numeroPresupuesto, 
   y += obs.length * 4 + 8;
 
 
-  // CONDICIONES
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(8.5);
-  doc.text("Condiciones", 15, y);
-
-  y += 5;
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(7.2);
-  doc.text("- Forma de pago recomendada: 50% al inicio y 50% a la entrega.", 15, y);
-  y += 4.5;
-  doc.text("- Servicios adicionales no incluidos se presupuestarán aparte.", 15, y);
-  y += 4.5;
-  doc.text("- El objetivo es mejorar imagen profesional, visibilidad y captación de clientes.", 15, y);
-
-  y += 12;
 
   // PIE
   doc.setFillColor(24, 32, 51);
