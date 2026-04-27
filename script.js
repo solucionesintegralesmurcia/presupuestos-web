@@ -261,13 +261,6 @@ function generarPDF() {
 function crearPDFPremium(doc, datos, calculo, seleccionados, numeroPresupuesto, fecha, logo) {
   let y = 12;
 
-  function nuevaPaginaSiHaceFalta(alturaNecesaria) {
-    if (y + alturaNecesaria > 270) {
-      doc.addPage();
-      y = 18;
-    }
-  }
-
   // CABECERA
   doc.setFillColor(24, 32, 51);
   doc.rect(0, 0, 210, 34, "F");
@@ -313,51 +306,46 @@ function crearPDFPremium(doc, datos, calculo, seleccionados, numeroPresupuesto, 
   doc.setFont("helvetica", "bold");
   doc.setFontSize(11);
   doc.text("Servicios incluidos", 15, y);
-  y += 8;
+
+  y += 7;
 
   seleccionados.forEach(s => {
-    const descripcionLineas = doc.splitTextToSize(s.descripcion || "", 120);
-    const alturaServicio = 12 + descripcionLineas.length * 4 + 7;
-
-    nuevaPaginaSiHaceFalta(alturaServicio);
-
     doc.setFillColor(250, 251, 252);
-    doc.roundedRect(15, y, 180, alturaServicio - 3, 3, 3, "F");
+    doc.roundedRect(15, y, 180, 13, 3, 3, "F");
 
     // Nombre
     doc.setTextColor(24, 32, 51);
     doc.setFont("helvetica", "bold");
     doc.setFontSize(8.5);
-    const nombreLineas = doc.splitTextToSize(s.nombre, 82);
-    doc.text(nombreLineas, 20, y + 6);
+    doc.text(s.nombre, 20, y + 5);
 
-    // Precio fijo
+    // Precio en columna derecha
     doc.setFontSize(8);
-    doc.setTextColor(24, 32, 51);
-    doc.text(`${s.precio} ${s.tipo === "mensual" ? "€/mes" : "€"}`, 126, y + 6);
+    doc.text(`${s.precio} ${s.tipo === "mensual" ? "€/mes" : "€"}`, 164, y + 5);
 
-    // Gratis fijo
+    // Gratis debajo del precio
     if (s.gratis) {
       doc.setTextColor(15, 122, 79);
-      doc.text("GRATIS", 155, y + 5);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(7.5);
+      doc.text("GRATIS", 164, y + 10);
       doc.setTextColor(24, 32, 51);
     }
 
+    y += 8;
+
     // Descripción
-    y += 12;
     doc.setFont("helvetica", "normal");
-    doc.setFontSize(7);
-    doc.setTextColor(24, 32, 51);
+    doc.setFontSize(6.8);
+    const descripcionLineas = doc.splitTextToSize(s.descripcion || "", 135);
     doc.text(descripcionLineas, 20, y);
 
-    y += descripcionLineas.length * 4 + 7;
+    y += descripcionLineas.length * 3.3 + 5;
   });
 
-  y += 3;
+  y += 2;
 
-  // RESUMEN
-  nuevaPaginaSiHaceFalta(45);
-
+  // RESUMEN ECONÓMICO
   doc.setFillColor(15, 122, 79);
   doc.roundedRect(15, y, 180, 34, 5, 5, "F");
 
@@ -382,29 +370,29 @@ function crearPDFPremium(doc, datos, calculo, seleccionados, numeroPresupuesto, 
   doc.setFontSize(8);
   doc.text(`Mantenimiento: ${calculo.mensual} €/mes`, 132, y + 29);
 
-  y += 43;
-
-  nuevaPaginaSiHaceFalta(25);
+  y += 42;
 
   // DETALLES
   doc.setTextColor(24, 32, 51);
   doc.setFont("helvetica", "bold");
-  doc.setFontSize(10);
+  doc.setFontSize(8.5);
   doc.text("Detalles", 15, y);
 
-  y += 6;
+  y += 5;
   doc.setFont("helvetica", "normal");
-  doc.setFontSize(8);
+  doc.setFontSize(7.5);
   doc.text("Validez del presupuesto: 15 días", 15, y);
 
-  y += 10;
+  y += 9;
 
   // OBSERVACIONES
   doc.setFont("helvetica", "bold");
+  doc.setFontSize(8.5);
   doc.text("Observaciones", 15, y);
 
-  y += 6;
+  y += 5;
   doc.setFont("helvetica", "normal");
+  doc.setFontSize(7.5);
   const obs = doc.splitTextToSize(datos.observaciones, 175);
   doc.text(obs, 15, y);
 
@@ -412,28 +400,57 @@ function crearPDFPremium(doc, datos, calculo, seleccionados, numeroPresupuesto, 
 
   // SIGUIENTE PASO
   doc.setFont("helvetica", "bold");
+  doc.setFontSize(8.5);
   doc.setTextColor(15, 122, 79);
   doc.text("Siguiente paso", 15, y);
 
-  y += 6;
+  y += 5;
   doc.setFont("helvetica", "normal");
+  doc.setFontSize(7.5);
   doc.setTextColor(24, 32, 51);
   doc.text("Puedes confirmar este presupuesto por WhatsApp y empezamos con tu proyecto.", 15, y);
 
-  y += 10;
+  y += 9;
 
   // CONDICIONES
   doc.setFont("helvetica", "bold");
+  doc.setFontSize(8.5);
   doc.text("Condiciones", 15, y);
 
-  y += 6;
+  y += 5;
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(7.2);
+  doc.text("- Forma de pago recomendada: 50% al inicio y 50% a la entrega.", 15, y);
+  y += 4.5;
+  doc.text("- Servicios adicionales no incluidos se presupuestarán aparte.", 15, y);
+  y += 4.5;
+  doc.text("- El objetivo es mejorar imagen profesional, visibilidad y captación de clientes.", 15, y);
+
+  y += 12;
+
+  // FIRMAS
+  doc.setDrawColor(24, 32, 51);
+  doc.line(15, y, 85, y);
+  doc.line(115, y, 185, y);
+
+  y += 5;
+  doc.setFontSize(7);
+  doc.text("Firma del cliente", 33, y);
+  doc.text("Firma / sello empresa", 134, y);
+
+  y += 11;
+
+  // CONTACTO
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(8);
+  doc.text("Datos de contacto", 15, y);
+
+  y += 5;
   doc.setFont("helvetica", "normal");
   doc.setFontSize(7.5);
-  doc.text("- Forma de pago recomendada: 50% al inicio y 50% a la entrega.", 15, y);
+  doc.text("Web: www.disenowebmurcia.es", 15, y);
   y += 5;
-  doc.text("- Servicios adicionales no incluidos se presupuestarán aparte.", 15, y);
-  y += 5;
-  doc.text("- El objetivo es mejorar imagen profesional, visibilidad y captación de clientes.", 15, y);
+  doc.text("Teléfono: 639311161", 15, y);
 
   // PIE
   doc.setFillColor(24, 32, 51);
