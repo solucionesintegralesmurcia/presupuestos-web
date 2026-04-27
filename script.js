@@ -398,19 +398,6 @@ function crearPDFPremium(doc, datos, calculo, seleccionados, numeroPresupuesto, 
 
   y += obs.length * 4 + 8;
 
-  // SIGUIENTE PASO
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(8.5);
-  doc.setTextColor(15, 122, 79);
-  doc.text("Siguiente paso", 15, y);
-
-  y += 5;
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(7.5);
-  doc.setTextColor(24, 32, 51);
-  doc.text("Puedes confirmar este presupuesto por WhatsApp y empezamos con tu proyecto.", 15, y);
-
-  y += 9;
 
   // CONDICIONES
   doc.setFont("helvetica", "bold");
@@ -427,30 +414,6 @@ function crearPDFPremium(doc, datos, calculo, seleccionados, numeroPresupuesto, 
   doc.text("- El objetivo es mejorar imagen profesional, visibilidad y captación de clientes.", 15, y);
 
   y += 12;
-
-  // FIRMAS
-  doc.setDrawColor(24, 32, 51);
-  doc.line(15, y, 85, y);
-  doc.line(115, y, 185, y);
-
-  y += 5;
-  doc.setFontSize(7);
-  doc.text("Firma del cliente", 33, y);
-  doc.text("Firma / sello empresa", 134, y);
-
-  y += 11;
-
-  // CONTACTO
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(8);
-  doc.text("Datos de contacto", 15, y);
-
-  y += 5;
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(7.5);
-  doc.text("Web: www.disenowebmurcia.es", 15, y);
-  y += 5;
-  doc.text("Teléfono: 639311161", 15, y);
 
   // PIE
   doc.setFillColor(24, 32, 51);
