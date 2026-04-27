@@ -384,7 +384,7 @@ function crearPDFPremium(doc, datos, calculo, seleccionados, numeroPresupuesto, 
 
   y += 43;
 
-  nuevaPaginaSiHaceFalta(60);
+  nuevaPaginaSiHaceFalta(25);
 
   // DETALLES
   doc.setTextColor(24, 32, 51);
