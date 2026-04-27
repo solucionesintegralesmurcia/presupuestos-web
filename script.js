@@ -261,7 +261,14 @@ function generarPDF() {
 function crearPDFPremium(doc, datos, calculo, seleccionados, numeroPresupuesto, fecha, logo) {
   let y = 12;
 
-  // CABECERA COMPACTA
+  function nuevaPaginaSiHaceFalta(alturaNecesaria) {
+    if (y + alturaNecesaria > 270) {
+      doc.addPage();
+      y = 18;
+    }
+  }
+
+  // CABECERA
   doc.setFillColor(24, 32, 51);
   doc.rect(0, 0, 210, 34, "F");
 
@@ -284,7 +291,7 @@ function crearPDFPremium(doc, datos, calculo, seleccionados, numeroPresupuesto, 
 
   y = 43;
 
-  // DATOS CLIENTE COMPACTOS
+  // DATOS CLIENTE
   doc.setTextColor(24, 32, 51);
   doc.setFillColor(245, 247, 250);
   doc.roundedRect(15, y, 180, 26, 4, 4, "F");
@@ -306,59 +313,51 @@ function crearPDFPremium(doc, datos, calculo, seleccionados, numeroPresupuesto, 
   doc.setFont("helvetica", "bold");
   doc.setFontSize(11);
   doc.text("Servicios incluidos", 15, y);
-
-  y += 7;
-
-  seleccionados.forEach(s => {
-  if (y > 218) {
-    doc.addPage();
-    y = 18;
-  }
-
-  doc.setFillColor(250, 251, 252);
-  doc.roundedRect(15, y, 180, 13, 3, 3, "F");
-
-  doc.setTextColor(24, 32, 51);
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(8.5);
-
-  const nombreLineas = doc.splitTextToSize(s.nombre, 92);
-  doc.text(nombreLineas, 20, y + 5);
-
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(8);
-
-  if (s.gratis) {
-    doc.text(`${s.precio} ${s.tipo === "mensual" ? "€/mes" : "€"}`, 126, y + 5);
-
-    doc.setTextColor(15, 122, 79);
-    doc.text("INCLUIDO GRATIS", 150, y + 5);
-    doc.setTextColor(24, 32, 51);
-  } else {
-    doc.text(`${s.precio} ${s.tipo === "mensual" ? "€/mes" : "€"}`, 170, y + 5);
-  }
-
   y += 8;
 
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(6.8);
-  doc.setTextColor(24, 32, 51);
+  seleccionados.forEach(s => {
+    const descripcionLineas = doc.splitTextToSize(s.descripcion || "", 120);
+    const alturaServicio = 12 + descripcionLineas.length * 4 + 7;
 
-  const descripcionLineas = doc.splitTextToSize(s.descripcion || "", 130);
-  doc.text(descripcionLineas, 20, y);
+    nuevaPaginaSiHaceFalta(alturaServicio);
 
-  y += descripcionLineas.length * 3.4 + 5;
-});
+    doc.setFillColor(250, 251, 252);
+    doc.roundedRect(15, y, 180, alturaServicio - 3, 3, 3, "F");
 
-  y += 1;
+    // Nombre
+    doc.setTextColor(24, 32, 51);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(8.5);
+    const nombreLineas = doc.splitTextToSize(s.nombre, 82);
+    doc.text(nombreLineas, 20, y + 6);
 
-  // Si queda poco espacio, nueva página
-  if (y > 205) {
-    doc.addPage();
-    y = 18;
-  }
+    // Precio fijo
+    doc.setFontSize(8);
+    doc.setTextColor(24, 32, 51);
+    doc.text(`${s.precio} ${s.tipo === "mensual" ? "€/mes" : "€"}`, 126, y + 6);
 
-  // RESUMEN ECONÓMICO
+    // Gratis fijo
+    if (s.gratis) {
+      doc.setTextColor(15, 122, 79);
+      doc.text("INCLUIDO GRATIS", 150, y + 6);
+      doc.setTextColor(24, 32, 51);
+    }
+
+    // Descripción
+    y += 12;
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(7);
+    doc.setTextColor(24, 32, 51);
+    doc.text(descripcionLineas, 20, y);
+
+    y += descripcionLineas.length * 4 + 7;
+  });
+
+  y += 3;
+
+  // RESUMEN
+  nuevaPaginaSiHaceFalta(45);
+
   doc.setFillColor(15, 122, 79);
   doc.roundedRect(15, y, 180, 34, 5, 5, "F");
 
@@ -385,64 +384,56 @@ function crearPDFPremium(doc, datos, calculo, seleccionados, numeroPresupuesto, 
 
   y += 43;
 
+  nuevaPaginaSiHaceFalta(60);
+
   // DETALLES
   doc.setTextColor(24, 32, 51);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(10);
+  doc.text("Detalles", 15, y);
 
-// DETALLES
-doc.setFont("helvetica", "bold");
-doc.setFontSize(10);
-doc.text("Detalles", 15, y);
+  y += 6;
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(8);
+  doc.text("Validez del presupuesto: 15 días", 15, y);
 
-y += 6;
+  y += 10;
 
-doc.setFont("helvetica", "normal");
-doc.setFontSize(8);
-doc.text("Validez del presupuesto: 15 días", 15, y);
+  // OBSERVACIONES
+  doc.setFont("helvetica", "bold");
+  doc.text("Observaciones", 15, y);
 
-y += 10;
+  y += 6;
+  doc.setFont("helvetica", "normal");
+  const obs = doc.splitTextToSize(datos.observaciones, 175);
+  doc.text(obs, 15, y);
 
-// OBSERVACIONES
-doc.setFont("helvetica", "bold");
-doc.text("Observaciones", 15, y);
+  y += obs.length * 4 + 8;
 
-y += 6;
+  // SIGUIENTE PASO
+  doc.setFont("helvetica", "bold");
+  doc.setTextColor(15, 122, 79);
+  doc.text("Siguiente paso", 15, y);
 
-doc.setFont("helvetica", "normal");
-const obs = doc.splitTextToSize(datos.observaciones, 170);
-doc.text(obs, 15, y);
+  y += 6;
+  doc.setFont("helvetica", "normal");
+  doc.setTextColor(24, 32, 51);
+  doc.text("Puedes confirmar este presupuesto por WhatsApp y empezamos con tu proyecto.", 15, y);
 
-y += obs.length * 4 + 10;
+  y += 10;
 
-// SIGUIENTE PASO
-doc.setFont("helvetica", "bold");
-doc.setTextColor(15, 122, 79);
-doc.text("Siguiente paso", 15, y);
+  // CONDICIONES
+  doc.setFont("helvetica", "bold");
+  doc.text("Condiciones", 15, y);
 
-y += 6;
-
-doc.setFont("helvetica", "normal");
-doc.setTextColor(24, 32, 51);
-doc.text("Puedes confirmar este presupuesto por WhatsApp y empezamos con tu proyecto.", 15, y);
-
-y += 12;
-
-// CONDICIONES
-doc.setFont("helvetica", "bold");
-doc.text("Condiciones", 15, y);
-
-y += 6;
-
-doc.setFont("helvetica", "normal");
-doc.setFontSize(7.5);
-doc.text("- Forma de pago recomendada: 50% al inicio y 50% a la entrega.", 15, y);
-
-y += 5;
-doc.text("- Servicios adicionales no incluidos se presupuestarán aparte.", 15, y);
-
-y += 5;
-doc.text("- El objetivo es mejorar imagen profesional, visibilidad y captación de clientes.", 15, y);
-
-y += 12;
+  y += 6;
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(7.5);
+  doc.text("- Forma de pago recomendada: 50% al inicio y 50% a la entrega.", 15, y);
+  y += 5;
+  doc.text("- Servicios adicionales no incluidos se presupuestarán aparte.", 15, y);
+  y += 5;
+  doc.text("- El objetivo es mejorar imagen profesional, visibilidad y captación de clientes.", 15, y);
 
   // PIE
   doc.setFillColor(24, 32, 51);
@@ -455,7 +446,6 @@ y += 12;
   const archivo = `presupuesto-${datos.negocio.toLowerCase().replaceAll(" ", "-")}.pdf`;
   doc.save(archivo);
 }
-
 function generarYEnviar() {
   generarPDF();
 
