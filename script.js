@@ -339,7 +339,7 @@ function crearPDFPremium(doc, datos, calculo, seleccionados, numeroPresupuesto, 
     // Gratis fijo
     if (s.gratis) {
       doc.setTextColor(15, 122, 79);
-      doc.text("INCLUIDO GRATIS", 150, y + 6);
+      doc.text("GRATIS", 155, y + 5);
       doc.setTextColor(24, 32, 51);
     }
 
