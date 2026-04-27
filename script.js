@@ -15,7 +15,7 @@ const servicios = [
     nombre: "Google Business optimizado",
     precio: 147,
     tipo: "unico",
-    descripcion: "Configuración y mejora de la ficha de Google para aparecer mejor en búsquedas locales y Google Maps."
+    descripcion: "Configuración y mejora de la ficha de Google para aparecer mejor en búsquedas locales y Google Maps." 
   },
   {
     nombre: "SEO local inicial",
